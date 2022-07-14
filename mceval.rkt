@@ -349,7 +349,7 @@
   (display input-prompt)
   (when (with-handlers
             ([exn:fail? (lambda (exn)
-                          (display "Metacircular Interpreter Aborted")
+                          (display "Error: ")
                           (display (exn-message exn))
                           (newline)
                           #t)])

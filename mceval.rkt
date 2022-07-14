@@ -305,6 +305,7 @@
         (list 'cdr cdr)
         (list 'cons cons)
         (list 'null? null?)
+        (list 'error error)
 ;;      more primitives
         ))
 
@@ -339,7 +340,7 @@
   (display input-prompt)
   (when (with-handlers
             ([exn:fail? (lambda (exn)
-                          (display "Error: ")
+                          (display "Error: Metacircular Interpreter Aborted")
                           (display (exn-message exn))
                           (newline)
                           #t)])

@@ -314,7 +314,7 @@
         (list '= =)
         (list '>= >=)
         (list '> >)
-        (list 'error (lambda () (error "Metacircular Interpreter Aborted"))
+        (list 'error (lambda () (error "Metacircular Interpreter Aborted")))
 ;;      more primitives
         ))
 

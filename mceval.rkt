@@ -24,6 +24,7 @@
         ((definition? exp) (eval-definition exp env))
         ((if? exp) (eval-if exp env))
         ((and? exp) (eval-and (rest exp) env))
+        ((or? exp) (eval-or (rest exp) env))
         ((lambda? exp)
          (make-procedure (lambda-parameters exp)
                          (lambda-body exp)
@@ -320,17 +321,26 @@
         ))
 
 (define (and? exp) (tagged-list? exp 'and))
+(define (or? exp) (tagged-list? exp 'or))
+
 
 (define (eval-and exp env)
-  (if (null? (car exp))'#t 
-      (if (null? (cdr exp))
-	  (mceval (car exp) env)
-	  (if (true? (mceval (car exp) env))(eval-and (cdr exp) env)'#f))))
+  (cond
+    [(null? exp) #t]
+    [(last-exp? exp) (mceval (first-exp exp) env)]
+    [(false? (mceval (first-exp exp) env)) #f]
+    [else (eval-and (rest exp) env)]))
 
 
-
-
-
+(define (eval-or exp env)
+  (let ([expr '()])
+    (define (let-or ex)
+      (if (null? ex) #f
+        (begin
+          (set! expr (mceval (first-exp ex) env))
+          (if (last-exp? ex) expr
+            (if (true? expr) expr (let-or (rest ex)))))))
+    (let-or exp)))
 
 
 (define (primitive-procedure-names)

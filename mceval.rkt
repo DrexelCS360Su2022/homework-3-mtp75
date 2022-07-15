@@ -23,6 +23,7 @@
         ((assignment? exp) (eval-assignment exp env))
         ((definition? exp) (eval-definition exp env))
         ((if? exp) (eval-if exp env))
+        ((and? exp) (eval-and (rest exp) env))
         ((lambda? exp)
          (make-procedure (lambda-parameters exp)
                          (lambda-body exp)
@@ -317,7 +318,20 @@
         (list 'error (lambda () (error "Metacircular Interpreter Aborted")))
 ;;      more primitives
         ))
-            
+
+(define (and? exp) (tagged-list? exp 'and))
+
+(define (eval-and exp env)
+  (if (null? (car exp))'true 
+      (if (null? (cdr exp))
+	  (mceval (car exp) env)
+	  (if (true? (mceval (car exp) env))(eval-and (cdr exp) env)'false))))
+
+
+
+
+
+
 
 (define (primitive-procedure-names)
   (map car

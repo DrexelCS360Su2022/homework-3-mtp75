@@ -322,10 +322,10 @@
 (define (and? exp) (tagged-list? exp 'and))
 
 (define (eval-and exp env)
-  (if (null? (car exp))'true 
+  (if (null? (car exp))'#t 
       (if (null? (cdr exp))
 	  (mceval (car exp) env)
-	  (if (true? (mceval (car exp) env))(eval-and (cdr exp) env)'false))))
+	  (if (true? (mceval (car exp) env))(eval-and (cdr exp) env)'#f))))
 
 
 

@@ -351,8 +351,7 @@
   (eval-sequence (cddr exp)
                  (extend-environment
                   (map car (cadr exp))
-                  (list-of-values (map cadr (cadr exp)) env)
-                  env)))
+                  (list-of-values (map cadr (cadr exp)) env)env)))
 
     
     

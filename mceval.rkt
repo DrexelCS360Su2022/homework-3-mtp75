@@ -25,6 +25,7 @@
         ((if? exp) (eval-if exp env))
         ((and? exp) (eval-and (rest exp) env))
         ((or? exp) (eval-or (rest exp) env))
+        ((let? exp) (eval-let exp env))
         ((lambda? exp)
          (make-procedure (lambda-parameters exp)
                          (lambda-body exp)
@@ -80,6 +81,9 @@
                     (mceval (definition-value exp) env)
                     env)
   'ok)
+
+
+
 
 ;;;SECTION 4.1.2
 
@@ -322,7 +326,7 @@
 
 (define (and? exp) (tagged-list? exp 'and))
 (define (or? exp) (tagged-list? exp 'or))
-
+(define (let? exp) (tagged-list? exp 'let))
 
 (define (eval-and exp env)
   (cond
@@ -343,6 +347,15 @@
     (let-or exp)))
 
 
+(define (eval-let exp env)
+  (eval-sequence (cddr exp)
+                 (extend-environment
+                  (map car (cadr exp))
+                  (list-of-values (map cadr (cadr exp)) env)
+                  env)))
+
+    
+    
 (define (primitive-procedure-names)
   (map car
        primitive-procedures))

@@ -1,6 +1,6 @@
 # CS 360 Project 1 Part I: The Metacircular Evaluator
 
-Collaborators:
+Collaborators: Manish, Ethan, Oscar
 
 Please put anything else you would like us to know here.
 

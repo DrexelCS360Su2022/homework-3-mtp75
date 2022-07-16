@@ -2,7 +2,7 @@
 
 Collaborators: Manish, Ethan, Oscar
 
-Please put anything else you would like us to know here.
+Was unable to complete question 4.
 
 ## Problem 5: Homework statistics
 

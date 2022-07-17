@@ -26,6 +26,8 @@
         ((and? exp) (eval-and (rest exp) env))
         ((or? exp) (eval-or (rest exp) env))
         ((let? exp) (eval-let exp env))
+        ((force? exp) (eval-force exp env))
+        ((delay? exp) (eval-delay exp env))
         ((lambda? exp)
          (make-procedure (lambda-parameters exp)
                          (lambda-body exp)
@@ -327,6 +329,8 @@
 (define (and? exp) (tagged-list? exp 'and))
 (define (or? exp) (tagged-list? exp 'or))
 (define (let? exp) (tagged-list? exp 'let))
+(define (force? exp) (tagged-list? exp 'force))
+(define (delay? exp) (tagged-list? exp 'delay))
 
 (define (eval-and exp env)
   (cond
@@ -351,9 +355,16 @@
   (eval-sequence (cddr exp)
                  (extend-environment
                   (map car (cadr exp))
-                  (list-of-values (map cadr (cadr exp)) env)env)))
+                  (list-of-values (map cadr (cadr exp)) env)
+                  env)))
 
-    
+
+(define (eval-delay exp env)
+   (mceval (make-lambda '() (rest-exps exp)) env))
+
+(define (eval-force exp env)
+   (mceval (rest-exps exp) env))
+
     
 (define (primitive-procedure-names)
   (map car
